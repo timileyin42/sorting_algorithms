@@ -3,17 +3,17 @@
 /**
  * swap_list - swaps the elements of the list
  *
- * @ptr: first pointer
- * @ptr1: second pointer
+ * @ptr1: first pointer
+ * @ptr2: second pointer
  * @n: n is 0 for increase, n is 1 for decrease
  * Return: no return
  */
-void swap_list(listint_t **ptr, listint_t **ptr1, int n)
+void swap_list(listint_t **ptr1, listint_t **ptr2, int n)
 {
 	listint_t *aux, *tmp;
 
-	aux = *ptr;
-	tmp = *ptr1;
+	aux = *ptr1;
+	tmp = *ptr2;
 
 	aux->next = tmp->next;
 	tmp->prev = aux->prev;
@@ -28,9 +28,9 @@ void swap_list(listint_t **ptr, listint_t **ptr1, int n)
 	tmp->next = aux;
 
 	if (n == 0)
-		*ptr = tmp;
+		*ptr1 = tmp;
 	else
-		*ptr1 = aux;
+		*ptr2 = aux;
 }
 
 /**
@@ -84,6 +84,7 @@ void decrease_sort(listint_t **ptr, listint_t **limit, listint_t **list)
 			swap_list(&(aux->prev), &aux, 1);
 			if (aux->prev->prev == NULL)
 				*list = aux->prev;
+			print_list(*list);
 		}
 		aux = aux->prev;
 	}
@@ -102,7 +103,7 @@ void decrease_sort(listint_t **ptr, listint_t **limit, listint_t **list)
  */
 void cocktail_sort_list(listint_t **list)
 {
-	listint_t *limit, *limit1, *ptr;
+	listint_t *limit1, *limit2, *ptr;
 
 	if (list == NULL)
 		return;
@@ -110,11 +111,11 @@ void cocktail_sort_list(listint_t **list)
 	if (*list == NULL)
 		return;
 
-	limit = limit1 = NULL;
+	limit1 = limit2 = NULL;
 	ptr = *list;
 
 	do {
-		increase_sort(&ptr, &limit, list);
-		decrease_sort(&ptr, &limit1, list);
-	} while (limit != limit1);
+		increase_sort(&ptr, &limit1, list);
+		decrease_sort(&ptr, &limit2, list);
+	} while (limit1 != limit2);
 }
